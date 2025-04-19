@@ -103,9 +103,21 @@ const buttonTexts = {
 function drawFortune() {
   const result = document.getElementById('result');
   const shrine = document.querySelector('.shrine');
+  const sound = document.getElementById('fortuneSound');
+  
+  // Play sound effect
+  if (sound) {
+    sound.currentTime = 0; // Reset to start
+    sound.play().catch(error => {
+      console.warn('Failed to play sound:', error);
+    });
+  }
+  
+  // Trigger shrine shaking and fade animation
   shrine.classList.add('shaking');
   result.classList.remove('fade-in', 'fade-out');
   result.classList.add('fade-out');
+  
   setTimeout(() => {
     currentIndex = Math.floor(Math.random() * fortunes.length);
     result.textContent = fortunes[currentIndex][languages[currentLang]];
