@@ -97,8 +97,7 @@ let currentIndex = null;
 
 const buttonTexts = {
   draw: { zh: '抽一籤！', ja: 'おみくじを引く！', en: 'Draw a Fortune!' },
-  lang: { zh: '🌐 切換語言', ja: '🌐 言語を切り替え', en: '🌐 Switch Language' },
-  share: { zh: '📤 分享籤詩', ja: '📤 おみくじをシェア', en: '📤 Share Fortune' }
+  lang: { zh: '🌐 切換語言', ja: '🌐 言語を切り替え', en: '🌐 Switch Language' }
 };
 
 function drawFortune() {
@@ -108,11 +107,7 @@ function drawFortune() {
   result.classList.remove('fade-in', 'fade-out');
   result.classList.add('fade-out');
   setTimeout(() => {
-    let newIndex;
-    do {
-      newIndex = Math.floor(Math.random() * fortunes.length);
-    } while (newIndex === currentIndex && fortunes.length > 1);
-    currentIndex = newIndex;
+    currentIndex = Math.floor(Math.random() * fortunes.length);
     result.textContent = fortunes[currentIndex][languages[currentLang]];
     result.classList.remove('fade-out');
     result.classList.add('fade-in');
@@ -129,9 +124,6 @@ function switchLang() {
   localStorage.setItem('omikujiLang', languages[currentLang]);
   document.getElementById('result').textContent = fortunes[currentIndex][languages[currentLang]];
   updateButtonText();
-  if (document.getElementById('lang-indicator')) {
-    document.getElementById('lang-indicator').textContent = `Language: ${languages[currentLang].toUpperCase()}`;
-  }
 }
 
 function shareFortune() {
@@ -154,10 +146,11 @@ function shareFortune() {
 function updateButtonText() {
   document.querySelector('button[onclick="drawFortune()"]').textContent = buttonTexts.draw[languages[currentLang]];
   document.querySelector('button[onclick="switchLang()"]').textContent = buttonTexts.lang[languages[currentLang]];
-  if (document.querySelector('button[onclick="shareFortune()"]')) {
-    document.querySelector('button[onclick="shareFortune()"]').textContent = buttonTexts.share[languages[currentLang]];
+  const langIndicator = document.getElementById('lang-indicator');
+  if (langIndicator) {
+    langIndicator.textContent = `Language: ${languages[currentLang].toUpperCase()}`;
   }
 }
 
-// Initialize button text on load
+// Initialize button text and lang-indicator on load
 updateButtonText();
