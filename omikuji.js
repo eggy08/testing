@@ -106,16 +106,6 @@ function switchLang() {
   document.getElementById('result').textContent = fortunes[currentIndex][languages[currentLang]];
   document.getElementById('lang-indicator').textContent = `Language: ${languages[currentLang].toUpperCase()}`;
 }
-function shareFortune() {
-  if (currentIndex === null) {
-    alert('Please draw a fortune first!');
-    return;
-  }
-  const fortuneText = fortunes[currentIndex][languages[currentLang]];
-  navigator.clipboard.writeText(fortuneText).then(() => {
-    alert('Fortune copied to clipboard!');
-  });
-}
 function drawFortune() {
   const result = document.getElementById('result');
   result.classList.add('fade-out');
