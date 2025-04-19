@@ -92,27 +92,72 @@ const fortunes = [
   }
 ];
 const languages = ['zh', 'en', 'ja'];
-let currentLang = 0;
+let currentLang = localStorage.getItem('omikujiLang') ? languages.indexOf(localStorage.getItem('omikujiLang')) : 0;
 let currentIndex = null;
 
-function drawFortune() {
-  currentIndex = Math.floor(Math.random() * fortunes.length);
-  document.getElementById('result').textContent = fortunes[currentIndex][languages[currentLang]];
-}
+const buttonTexts = {
+  draw: { zh: '抽一籤！', ja: 'おみくじを引く！', en: 'Draw a Fortune!' },
+  lang: { zh: '🌐 切換語言', ja: '🌐 言語を切り替え', en: '🌐 Switch Language' },
+  share: { zh: '📤 分享籤詩', ja: '📤 おみくじをシェア', en: '📤 Share Fortune' }
+};
 
-function switchLang() {
-  if (currentIndex === null) return;
-  currentLang = (currentLang + 1) % languages.length;
-  document.getElementById('result').textContent = fortunes[currentIndex][languages[currentLang]];
-  document.getElementById('lang-indicator').textContent = `Language: ${languages[currentLang].toUpperCase()}`;
-}
 function drawFortune() {
   const result = document.getElementById('result');
+  const shrine = document.querySelector('.shrine');
+  shrine.classList.add('shaking');
+  result.classList.remove('fade-in', 'fade-out');
   result.classList.add('fade-out');
   setTimeout(() => {
-    currentIndex = Math.floor(Math.random() * fortunes.length);
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * fortunes.length);
+    } while (newIndex === currentIndex && fortunes.length > 1);
+    currentIndex = newIndex;
     result.textContent = fortunes[currentIndex][languages[currentLang]];
     result.classList.remove('fade-out');
     result.classList.add('fade-in');
+    shrine.classList.remove('shaking');
   }, 500);
 }
+
+function switchLang() {
+  if (currentIndex === null) {
+    alert('Please draw a fortune first!');
+    return;
+  }
+  currentLang = (currentLang + 1) % languages.length;
+  localStorage.setItem('omikujiLang', languages[currentLang]);
+  document.getElementById('result').textContent = fortunes[currentIndex][languages[currentLang]];
+  updateButtonText();
+  if (document.getElementById('lang-indicator')) {
+    document.getElementById('lang-indicator').textContent = `Language: ${languages[currentLang].toUpperCase()}`;
+  }
+}
+
+function shareFortune() {
+  if (currentIndex === null) {
+    alert('Please draw a fortune first!');
+    return;
+  }
+  const fortuneText = fortunes[currentIndex][languages[currentLang]];
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(fortuneText).then(() => {
+      alert('Fortune copied to clipboard!');
+    }).catch(() => {
+      prompt('Copy this fortune:', fortuneText);
+    });
+  } else {
+    prompt('Copy this fortune:', fortuneText);
+  }
+}
+
+function updateButtonText() {
+  document.querySelector('button[onclick="drawFortune()"]').textContent = buttonTexts.draw[languages[currentLang]];
+  document.querySelector('button[onclick="switchLang()"]').textContent = buttonTexts.lang[languages[currentLang]];
+  if (document.querySelector('button[onclick="shareFortune()"]')) {
+    document.querySelector('button[onclick="shareFortune()"]').textContent = buttonTexts.share[languages[currentLang]];
+  }
+}
+
+// Initialize button text on load
+updateButtonText();
