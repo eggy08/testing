@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>冥式おみくじ</title>
+  <style>
+    body {
+      font-family: 'Noto Serif TC', serif;
+      background: #fffaf5;
+      text-align: center;
+      padding: 2em;
+    }
+    .shrine {
+      font-size: 3em;
+    }
+    .title {
+      font-size: 2em;
+      margin: 0.5em 0 1em;
+      color: #c71585;
+    }
+    .omikuji-box {
+      background: #fff0f5;
+      border-radius: 1em;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 2em auto;
+      padding: 2em;
+    }
+    button {
+      font-size: 1.1em;
+      padding: 0.6em 1.2em;
+      margin: 0.5em;
+      border: none;
+      background-color: #f4a7b9;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e68a9e;
+    }
+    .result {
+      white-space: pre-wrap;
+      font-size: 1.1em;
+      line-height: 1.8em;
+      text-align: center;
+    }
+    .result {
+      transition: opacity 0.5s ease-in-out;
+    }
+    .fade-out {
+      opacity: 0;
+    }
+    .fade-in {
+       opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="shrine">⛩️</div>
+  <div class="title">🌸冥式おみくじ🌸</div>
+  <button onclick="drawFortune()">抽一籤！</button>
+  <div class="omikuji-box">
+    <div id="result" class="result">請點擊上方抽籤按鈕，讓冥為你降下一句話。</div>
+  </div>
+  <button onclick="switchLang()">🌐 切換語言</button>
+
+  <script src="omikuji.js"></script>
+</body>
+</html>
