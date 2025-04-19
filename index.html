@@ -13,6 +13,14 @@
     .shrine {
       font-size: 3em;
     }
+    .shrine.shaking {
+      animation: shake 0.3s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
     .title {
       font-size: 2em;
       margin: 0.5em 0 1em;
@@ -44,27 +52,31 @@
       font-size: 1.1em;
       line-height: 1.8em;
       text-align: center;
-    }
-    .result {
       transition: opacity 0.5s ease-in-out;
     }
-    .fade-out {
+    .result.fade-out {
       opacity: 0;
     }
-    .fade-in {
-       opacity: 1;
+    .result.fade-in {
+      opacity: 1;
+    }
+    #lang-indicator {
+      font-size: 1em;
+      color: #c71585;
+      margin-top: 1em;
     }
   </style>
 </head>
 <body>
   <div class="shrine">⛩️</div>
   <div class="title">🌸冥式おみくじ🌸</div>
-  <button onclick="drawFortune()">抽一籤！</button>
+  <button onclick="drawFortune()" aria-label="Draw a fortune">抽一籤！</button>
   <div class="omikuji-box">
-    <div id="result" class="result">請點擊上方抽籤按鈕，讓冥為你降下一句話。</div>
+    <div id="result" class="result" aria-live="polite">請點擊上方抽籤按鈕，讓冥為你降下一句話。</div>
   </div>
-  <button onclick="switchLang()">🌐 切換語言</button>
-
+  <button onclick="switchLang()" aria-label="Switch language">🌐 切換語言</button>
+  <button onclick="shareFortune()" aria-label="Share fortune">📤 分享籤詩</button>
+  <div id="lang-indicator">Language: ZH</div>
   <script src="omikuji.js"></script>
 </body>
 </html>
